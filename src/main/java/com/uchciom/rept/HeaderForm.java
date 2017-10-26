@@ -28,7 +28,7 @@ public class HeaderForm extends RectangleForm implements Printable {
 	 * java.awt.print.PageFormat, int)
 	 */
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
-		graphics.setColor(Color.ORANGE);
+		graphics.setColor(Color.RED);
 		graphics.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 		return 0;
 	}

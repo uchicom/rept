@@ -4,27 +4,115 @@ package com.uchicom.rept;
 import java.awt.Rectangle;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.util.Date;
+
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.standard.MediaPrintableArea;
+import javax.print.attribute.standard.MediaSizeName;
+import javax.print.attribute.standard.OrientationRequested;
+import javax.print.attribute.standard.PageRanges;
+import javax.print.attribute.standard.PrintQuality;
+import javax.print.attribute.standard.PrinterResolution;
 
 import org.junit.Test;
 
+import com.uchciom.rept.ContentForm;
+import com.uchciom.rept.FooterForm;
 import com.uchciom.rept.HeaderForm;
+import com.uchciom.rept.PageForm;
 import com.uchciom.rept.RootForm;
+import com.uchciom.rept.TitleForm;
 
 /**
+ * 
+ * 210x297mm
+ * 72dpi 595x842px
+ * set.add(new NumberOfDocuments(10));//javax.print.attribute.standardにすべてある
  * @author uchicom: Shigeki Uchiyama
  *
  */
 public class PrintTest {
+	/**
+	 * A4縦 72dpi ヘッダ、コンテンツ、フッタ表示
+	 * ダイアログ無し
+	 */
 	@Test
-	public void test() {
+	public void testBackground() {
 		PrinterJob job = PrinterJob.getPrinterJob();
 		RootForm rootForm = new RootForm();
-		rootForm.setHeaderForm(new HeaderForm(new Rectangle(0, 0, 1000, 200)));
+		rootForm.setHeaderForm(new HeaderForm(new Rectangle(0, 0, 595, 100)));
+		rootForm.setContentForm(new ContentForm(new Rectangle(0, 110, 595, 600)));
+		rootForm.setFooterForm(new FooterForm(new Rectangle(0, 720, 595, 122)));
+		job.setPrintable(rootForm);
+		HashPrintRequestAttributeSet set = new HashPrintRequestAttributeSet();
+		set.add(MediaSizeName.ISO_A4);
+		set.add(OrientationRequested.PORTRAIT);
+		try {
+			job.print(set);
+		} catch (PrinterException pe) {
+			pe.printStackTrace();
+		}
+	}
 
-		boolean doPrint = job.printDialog();
+	/**
+	 * A4縦 72dpi ヘッダ、コンテンツ、フッタ表示
+	 * ダイアログ無し
+	 */
+	@Test
+	public void testDialog() {
+		PrinterJob job = PrinterJob.getPrinterJob();
+		RootForm rootForm = new RootForm();
+		rootForm.setHeaderForm(new HeaderForm(new Rectangle(0, 0, 595, 100)));
+		rootForm.setContentForm(new ContentForm(new Rectangle(0, 110, 595, 600)));
+		rootForm.setFooterForm(new FooterForm(new Rectangle(0, 720, 595, 122)));
+		job.setPrintable(rootForm);
+		HashPrintRequestAttributeSet set = new HashPrintRequestAttributeSet();
+		set.add(MediaSizeName.ISO_A4);
+		//set.add(new NumberOfDocuments(10));//javax.print.attribute.standardにすべてある
+		set.add(OrientationRequested.PORTRAIT);
+		boolean doPrint = job.printDialog(set);
 		if (doPrint) {
 			try {
-				job.print();
+				job.print(set);
+			} catch (PrinterException pe) {
+				pe.printStackTrace();
+			}
+		}
+	}
+	/**
+	 * A4縦 72dpi ヘッダ、コンテンツ、フッタ表示
+	 * ダイアログ無し
+	 */
+	@Test
+	public void testLandscape() {
+		//タイトルを出力
+		//リストで文字を渡して表にする
+		//ページ番号を出力
+		//
+		PrinterJob job = PrinterJob.getPrinterJob();
+//		job.getPrintService().createPrintJob().getAttributes().add(new PrinterResolution(300,300,PrinterResolution.DPI));
+		RootForm rootForm = new RootForm();
+		rootForm.setHeaderForm(new TitleForm(new Rectangle(0, 0, 595, 100), "あいう", new Date()));
+		rootForm.setContentForm(new ContentForm(new Rectangle(0, 110, 595, 600)));
+		rootForm.setFooterForm(new PageForm(new Rectangle(0, 720, 595, 122), 10));
+		job.setPrintable(rootForm);
+//		Book book = new Book();
+//		book.append(rootForm,  job.defaultPage(), 5);
+//		job.setPageable(book);
+		HashPrintRequestAttributeSet set = new HashPrintRequestAttributeSet();
+		set.add(MediaSizeName.ISO_A4);
+		set.add(OrientationRequested.LANDSCAPE);
+		set.add(javax.print.attribute.standard.PrintQuality.HIGH);
+//		set.add(javax.print.attribute.standard.Compression.NONE);
+		set.add(new PageRanges(1, 3));
+		set.add(new MediaPrintableArea(0,0, 210, 297, MediaPrintableArea.MM));
+		boolean doPrint = job.printDialog(set);
+		
+		if (doPrint) {
+			try {
+				set.add(new PrinterResolution(600, 600, PrinterResolution.DPI));
+				set.add(PrintQuality.HIGH);
+				job.print(set);
 
 			} catch (PrinterException pe) {
 				pe.printStackTrace();

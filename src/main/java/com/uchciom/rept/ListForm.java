@@ -5,22 +5,25 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.print.PageFormat;
-import java.awt.print.Printable;
 import java.awt.print.PrinterException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author uchicom: Shigeki Uchiyama
  *
  */
-public class ContentForm extends RectangleForm implements Printable {
+public class ListForm<T> extends ContentForm {
 
+	private List<T> list = new ArrayList<>();
+	
 	/**
 	 * @param rectangle
 	 */
-	public ContentForm(Rectangle rectangle) {
+	public ListForm(Rectangle rectangle) {
 		super(rectangle);
 	}
-	int count = 0;
+
 	/*
 	 * (非 Javadoc)
 	 *
@@ -28,9 +31,8 @@ public class ContentForm extends RectangleForm implements Printable {
 	 * java.awt.print.PageFormat, int)
 	 */
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
-		graphics.setColor(Color.GREEN);
+		graphics.setColor(Color.RED);
 		graphics.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 		return 0;
 	}
-
 }

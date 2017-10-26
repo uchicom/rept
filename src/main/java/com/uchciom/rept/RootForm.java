@@ -33,6 +33,7 @@ public class RootForm implements Printable {
 	public void setFooterForm(FooterForm footerForm) {
 		this.footerForm = footerForm;
 	}
+	int count;
 	/* (非 Javadoc)
 	 * @see java.awt.print.Printable#print(java.awt.Graphics, java.awt.print.PageFormat, int)
 	 */
@@ -46,6 +47,11 @@ public class RootForm implements Printable {
 		if (footerForm != null) {
 			footerForm.print(graphics, pageFormat, pageIndex);
 		}
-		return Printable.PAGE_EXISTS;
+		if (count == 0) {
+			count++;
+			return Printable.PAGE_EXISTS;
+		} else {
+			return Printable.NO_SUCH_PAGE;
+		}
 	}
 }

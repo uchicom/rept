@@ -1,6 +1,7 @@
 // (c) 2017 uchicom
 package com.uchciom.rept;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.print.PageFormat;
@@ -24,7 +25,8 @@ public class FooterForm extends RectangleForm implements Printable {
 	 * @see java.awt.print.Printable#print(java.awt.Graphics, java.awt.print.PageFormat, int)
 	 */
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
-		// TODO 自動生成されたメソッド・スタブ
+		graphics.setColor(Color.BLUE);
+		graphics.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 		return 0;
 	}
 
