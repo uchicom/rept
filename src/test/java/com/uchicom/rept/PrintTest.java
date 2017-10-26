@@ -7,12 +7,11 @@ import java.awt.print.PrinterJob;
 import java.util.Date;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.standard.Chromaticity;
 import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.OrientationRequested;
 import javax.print.attribute.standard.PageRanges;
-import javax.print.attribute.standard.PrintQuality;
-import javax.print.attribute.standard.PrinterResolution;
 
 import org.junit.Test;
 
@@ -102,6 +101,7 @@ public class PrintTest {
 		HashPrintRequestAttributeSet set = new HashPrintRequestAttributeSet();
 		set.add(MediaSizeName.ISO_A4);
 		set.add(OrientationRequested.LANDSCAPE);
+		set.add(Chromaticity.MONOCHROME);
 		set.add(javax.print.attribute.standard.PrintQuality.HIGH);
 //		set.add(javax.print.attribute.standard.Compression.NONE);
 		set.add(new PageRanges(1, 3));
@@ -110,8 +110,8 @@ public class PrintTest {
 		
 		if (doPrint) {
 			try {
-				set.add(new PrinterResolution(600, 600, PrinterResolution.DPI));
-				set.add(PrintQuality.HIGH);
+//				set.add(new PrinterResolution(600, 600, PrinterResolution.DPI));
+//				set.add(PrintQuality.HIGH);
 				job.print(set);
 
 			} catch (PrinterException pe) {

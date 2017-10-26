@@ -7,7 +7,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
+import java.awt.RenderingHints;
+import java.awt.color.ColorSpace;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 
@@ -29,22 +30,16 @@ public class PageForm extends FooterForm {
 	@Override
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
 		super.print(graphics, pageFormat, pageIndex);
-		//管理者でないとdrawString系が使えないので、画像出力とする
-		BufferedImage image = new BufferedImage(rectangle.width, rectangle.height, BufferedImage.TYPE_BYTE_GRAY);
-		Graphics g = image.getGraphics();
-		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, rectangle.width, rectangle.height);
-		g.setColor(Color.BLACK);
-		g.setFont(fnt);
-		System.out.println(((Graphics2D)graphics).getDeviceConfiguration().getColorModel().getColorSpace());
-		FontMetrics fm = g.getFontMetrics(fnt);
+		graphics.setColor(Color.BLACK);
+		graphics.setFont(fnt);
+		System.out.println(((Graphics2D)graphics).getRenderingHint(	RenderingHints.KEY_COLOR_RENDERING));
+		System.out.println("Color.RGB" + ColorSpace.TYPE_RGB);
+		System.out.println("Color.GRAY" + ColorSpace.TYPE_GRAY);
+		FontMetrics fm = graphics.getFontMetrics(fnt);
 		String pageString = pageIndex + "/" + max;
 		int length = fm.stringWidth(pageString);
-		g.drawString(pageString, (rectangle.width - length) /2, rectangle.height / 2);
+		graphics.drawString(pageString, rectangle.x + (rectangle.width - length) /2, rectangle.y + rectangle.height / 2);
 	
-		graphics.drawImage(image, rectangle.x, rectangle.y, rectangle.width, rectangle.height, null);
-
-
 		System.out.println("c");
 		return 0;
 	}
