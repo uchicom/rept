@@ -33,25 +33,29 @@ public class RootForm implements Printable {
 	public void setFooterForm(FooterForm footerForm) {
 		this.footerForm = footerForm;
 	}
-	int count;
 	/* (非 Javadoc)
 	 * @see java.awt.print.Printable#print(java.awt.Graphics, java.awt.print.PageFormat, int)
 	 */
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+		int header = -1;
 		if (headerForm != null) {
-			headerForm.print(graphics, pageFormat, pageIndex);
+			header = headerForm.print(graphics, pageFormat, pageIndex);
 		}
+		int content = -1;
 		if (contentForm != null) {
-			contentForm.print(graphics, pageFormat, pageIndex);
+			content = contentForm.print(graphics, pageFormat, pageIndex);
 		}
+		int footer = -1;
 		if (footerForm != null) {
-			footerForm.print(graphics, pageFormat, pageIndex);
+			footer = footerForm.print(graphics, pageFormat, pageIndex);
 		}
-		if (count == 0) {
-			count++;
-			return Printable.PAGE_EXISTS;
+		if (header == NO_SUCH_PAGE ||
+				content == NO_SUCH_PAGE ||
+				footer == NO_SUCH_PAGE ||
+				header == -1 && content == -1 && footer == -1) {
+			return NO_SUCH_PAGE;
 		} else {
-			return Printable.NO_SUCH_PAGE;
+			return PAGE_EXISTS;
 		}
 	}
 }

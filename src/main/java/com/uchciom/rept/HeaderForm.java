@@ -30,7 +30,7 @@ public class HeaderForm extends RectangleForm implements Printable {
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
 		graphics.setColor(Color.RED);
 		graphics.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-		return 0;
+		return PAGE_EXISTS;
 	}
 
 }
