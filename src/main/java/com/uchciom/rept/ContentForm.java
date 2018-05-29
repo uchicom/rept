@@ -33,4 +33,7 @@ public class ContentForm extends RectangleForm implements Printable {
 		return PAGE_EXISTS;
 	}
 
+	public int getMaxPage() {
+		return 0;
+	}
 }
