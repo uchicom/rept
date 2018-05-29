@@ -97,4 +97,12 @@ public class RootForm implements Printable {
 			return PAGE_EXISTS;
 		}
 	}
+	
+	public int getMaxPage() {
+		if (contentForm != null) {
+			return contentForm.getMaxPage();
+		} else {
+			return 0;
+		}
+	}
 }
