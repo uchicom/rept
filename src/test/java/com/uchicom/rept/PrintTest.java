@@ -38,7 +38,7 @@ public class PrintTest {
 	@Test
 	public void testBackground() {
 		PrinterJob job = PrinterJob.getPrinterJob();
-		RootForm rootForm = new RootForm();
+		RootForm rootForm = new RootForm(MediaSizeName.ISO_A4);
 		rootForm.setHeaderForm(new HeaderForm(new Rectangle(0, 0, 595, 100)));
 		rootForm.setContentForm(new ContentForm(new Rectangle(0, 110, 595, 600)));
 		rootForm.setFooterForm(new FooterForm(new Rectangle(0, 720, 595, 122)));
@@ -60,7 +60,7 @@ public class PrintTest {
 	@Test
 	public void testDialog() {
 		PrinterJob job = PrinterJob.getPrinterJob();
-		RootForm rootForm = new RootForm();
+		RootForm rootForm = new RootForm(MediaSizeName.ISO_A4);
 		rootForm.setHeaderForm(new HeaderForm(new Rectangle(0, 0, 595, 100)));
 		rootForm.setContentForm(new ContentForm(new Rectangle(0, 110, 595, 600)));
 		rootForm.setFooterForm(new FooterForm(new Rectangle(0, 720, 595, 122)));
@@ -90,7 +90,7 @@ public class PrintTest {
 		//
 		PrinterJob job = PrinterJob.getPrinterJob();
 //		job.getPrintService().createPrintJob().getAttributes().add(new PrinterResolution(300,300,PrinterResolution.DPI));
-		RootForm rootForm = new RootForm();
+		RootForm rootForm = new RootForm(MediaSizeName.ISO_A4);
 		rootForm.setHeaderForm(new TitleForm(new Rectangle(0, 0, 595, 100), "あいう", new Date()));
 		rootForm.setContentForm(new ContentForm(new Rectangle(0, 110, 595, 600)));
 		rootForm.setFooterForm(new PageForm(new Rectangle(0, 720, 595, 122), 10));

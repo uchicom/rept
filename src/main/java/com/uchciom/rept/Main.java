@@ -22,7 +22,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		PrinterJob job = PrinterJob.getPrinterJob();
-		RootForm rootForm = new RootForm();
+		RootForm rootForm = new RootForm(MediaSizeName.ISO_A4);
 		rootForm.setHeaderForm(new TitleForm(new Rectangle(0, 0, 1000, 200), "あいう", new Date()));
 //		rootForm.setHeaderForm(new HeaderForm(new Rectangle(0, 0, 1000, 200)));
 		rootForm.setContentForm(new ContentForm(new Rectangle(0, 210, 500, 500)));
