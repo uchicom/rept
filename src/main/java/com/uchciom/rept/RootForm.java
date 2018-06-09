@@ -20,10 +20,12 @@ public class RootForm implements Printable {
 	protected ContentForm contentForm;
 	protected FooterForm footerForm;
 
+	protected MediaSizeName mediaSizeName;
 	protected int width;
 	protected int height;
 
 	public RootForm(MediaSizeName mediaSizeName, OrientationRequested orientationRequested) {
+		this.mediaSizeName = mediaSizeName;
 		MediaSize size = MediaSize.getMediaSizeForName(mediaSizeName);
 		if (OrientationRequested.LANDSCAPE == orientationRequested) {
 			height = (int) (size.getX(MediaSize.INCH) * 72);
@@ -37,6 +39,9 @@ public class RootForm implements Printable {
 	public RootForm(MediaSizeName mediaSizeName) {
 		this(mediaSizeName, OrientationRequested.LANDSCAPE);
 
+	}
+	public MediaSizeName getMediaSizeName() {
+		return mediaSizeName;
 	}
 
 	public int getWidth() {
