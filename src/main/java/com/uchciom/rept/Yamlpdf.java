@@ -38,13 +38,14 @@ public class Yamlpdf implements Closeable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		if (args.length == 0) return;
 		long start = System.currentTimeMillis();
 		try (PDDocument document = new PDDocument()) {
 			Yaml yaml = new Yaml();
 			System.out.println((System.currentTimeMillis() - start) + "[msec]yaml create");
 			start = System.currentTimeMillis();
 			Template template = yaml.loadAs(
-					new String(Files.readAllBytes(new File("src/test/resources/template.yaml").toPath())),
+					new String(Files.readAllBytes(new File(args[0]).toPath())),
 					Template.class);
 //			System.out.println(template);
 
@@ -64,15 +65,34 @@ public class Yamlpdf implements Closeable {
 			for (int i = 0; i < 10; i++) {
 				System.out.println(i);
 				paramMap.put("name", i + "株式会社");
-				yamlPdf.addPage(paramMap);
+				yamlPdf.init();
+				System.out.println((System.currentTimeMillis() - start) + "[msec]yamlPdf init");
+				start = System.currentTimeMillis();
+				PDPage page1 = yamlPdf.addPage(paramMap);
+				PDPage page2 = yamlPdf.addPage(paramMap);
+				PDPage page3 = yamlPdf.addPage(paramMap);
+				PDPage page4 = yamlPdf.addPage(paramMap);
+				PDPage page5 = yamlPdf.addPage(paramMap);
+				PDPage page6 = yamlPdf.addPage(paramMap);
+				PDPage page7 = yamlPdf.addPage(paramMap);
+				PDPage page8 = yamlPdf.addPage(paramMap);
 				File outFile = new File("result/" + i + "test.pdf");
 				outFile.createNewFile();
 				FileOutputStream fos = new FileOutputStream(outFile);
 				document.save(fos);
 				fos.close();
+				document.removePage(page1);
+				document.removePage(page2);
+				document.removePage(page3);
+				document.removePage(page4);
+				document.removePage(page5);
+				document.removePage(page6);
+				document.removePage(page7);
+				document.removePage(page8);
+				System.out.println((System.currentTimeMillis() - start) + "[msec]yamlPdf create 1 file");
+				start = System.currentTimeMillis();
+				
 			}
-			document.save("test.pdf");
-			System.out.println((System.currentTimeMillis() - start) + "[msec]yamlPdf page create");
 			yamlPdf.close();
 			// 作成したPDFを保存
 			System.out.println((System.currentTimeMillis() - start) + "[msec]pdf save");
@@ -86,6 +106,7 @@ public class Yamlpdf implements Closeable {
 	PDDocument document;
 	Template template;
 	PDFont font;
+	TrueTypeFont ttf;
 	TrueTypeCollection ttc;
 
 	public Yamlpdf(PDDocument document, Template template) throws IOException {
@@ -93,16 +114,16 @@ public class Yamlpdf implements Closeable {
 		ttc = new TrueTypeCollection(Files.newInputStream(Paths.get("C:/Windows/Fonts/msgothic.ttc")));// TODO
 		System.out.println((System.currentTimeMillis() - start) + "[msec]ttc create");
 		start = System.currentTimeMillis();
-		TrueTypeFont ttf = ttc.getFontByName("MS-Gothic");
+		ttf = ttc.getFontByName("MS-Gothic");
 		System.out.println((System.currentTimeMillis() - start) + "[msec]ttf create");
 		start = System.currentTimeMillis();
-		font = PDType0Font.load(document, ttf, true);
+		
 		System.out.println((System.currentTimeMillis() - start) + "[msec]document font load");
 		start = System.currentTimeMillis();
 		Map<String, URL> imageMap = template.getSpec().getImageMap();
 		imageMap.forEach((key, value) -> {
 			try {
-				xImageMap.put(key, PDImageXObject.createFromFile("sample.png", document));
+				xImageMap.put(key, PDImageXObject.createFromFile(value.getFile(), document));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -115,7 +136,14 @@ public class Yamlpdf implements Closeable {
 		this.template = template;
 	}
 
-	public void addPage(Map<String, Object> paramMap) throws IOException {
+	/**
+	 * 初期化
+	 * @throws IOException 
+	 */
+	public void init() throws IOException {
+		font = PDType0Font.load(document, ttf, true);
+	}
+	public PDPage addPage(Map<String, Object> paramMap) throws IOException {
 		PDPage page = new PDPage(PDRectangle.A4);
 		document.addPage(page);
 		Map<String, Color> colorMap = template.getSpec().getColorMap();
@@ -195,6 +223,7 @@ public class Yamlpdf implements Closeable {
 		}
 		// ストリームを閉じる
 		stream.close();
+		return page;
 	}
 
 	@Override
