@@ -1,5 +1,5 @@
 // (c) 2017 uchicom
-package com.uchciom.rept;
+package com.uchicom.rept;
 
 import java.awt.Color;
 import java.awt.Font;

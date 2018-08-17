@@ -15,12 +15,12 @@ import javax.print.attribute.standard.PageRanges;
 
 import org.junit.Test;
 
-import com.uchciom.rept.ContentForm;
-import com.uchciom.rept.FooterForm;
-import com.uchciom.rept.HeaderForm;
-import com.uchciom.rept.PageForm;
-import com.uchciom.rept.RootForm;
-import com.uchciom.rept.TitleForm;
+import com.uchicom.rept.ContentForm;
+import com.uchicom.rept.FooterForm;
+import com.uchicom.rept.HeaderForm;
+import com.uchicom.rept.PageForm;
+import com.uchicom.rept.RootForm;
+import com.uchicom.rept.TitleForm;
 
 /**
  * 
